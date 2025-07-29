@@ -1,16 +1,13 @@
-import { test, expect } from '@playwright/test';
-import { DownloadPage } from './pageObjects/Downloader';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/Fixtures';
 
 test.describe('Download Page Tests', () => {
-  let downloadPage: DownloadPage;
-
-  test.beforeEach(async ({ page }) => {
-    downloadPage = new DownloadPage(page);
+    test.beforeEach(async ({ downloadPage }) => {
     await downloadPage.goToPage(); 
   });
 
   // Test downloading the first file from the list
-  test('verify that the first file can be downloaded', async () => {
+  test('verify that the first file can be downloaded', async ({ downloadPage }) => {
     const filePath = await downloadPage.downloadFileAt(0); // first link
     console.log('Download finished, file saved to:', filePath);
 
@@ -21,7 +18,7 @@ test.describe('Download Page Tests', () => {
   });
 
   // Test downloading a file from a random index
-  test('verify that a random file can be downloaded', async () => {
+  test('verify that a random file can be downloaded', async ({ downloadPage }) => {
     const totalLinks = await downloadPage.downloadLinks.count(); // how many files available
     const randomIndex = Math.floor(Math.random() * totalLinks); // pick a random one
     console.log('Random index chosen:', randomIndex);
@@ -32,7 +29,7 @@ test.describe('Download Page Tests', () => {
   });
 
   // Test that downloaded file is not empty
-  test('verify that downloaded file is not empty', async () => {
+  test('verify that downloaded file is not empty', async ({ downloadPage }) => {
     const filePath = await downloadPage.downloadFileAt(1); // second file
     const fs = require('fs');
 

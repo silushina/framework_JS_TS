@@ -1,12 +1,9 @@
-import { test } from '@playwright/test';
-import { Uploader } from './pageObjects/Uploader';
+import { test } from './fixtures/Fixtures';
 
-test('verify that file can be uploaded successfully', async ({ page }) => {
-  const uploadPage = new Uploader(page);
+test('verify that file can be uploaded successfully', async ({ uploader }) => {
+  await uploader.goToPage();
 
-  await uploadPage.goToPage();
+  await uploader.uploadFileChooseButton('notes.txt');
 
-  await uploadPage.uploadFileChooseButton('notes.txt');
-
-  await uploadPage.verifyUpload('notes.txt');
+  await uploader.verifyUpload('notes.txt');
 });
